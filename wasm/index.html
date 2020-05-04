@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<script src="wasm_exec.js"></script>
+		<script>
+			const go = new Go();
+			let inst;
+			WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then(async (result) => {
+				await go.run(result.instance);
+				inst = await WebAssembly.instantiate(result.module, go.importObject);
+			});
+		</script>
+	</head>
+	<body>
+		<script>
+			// delay until instantiate finish, then print
+			setTimeout(function() {
+				document.write(printSimple())
+			}, 100)
+		</script>
+	</body>
+</html>
